@@ -16,7 +16,8 @@
 using namespace std;
 #include <string>
 
-enum message_type{none,foundG, foundP, foundS, foundR, foundM,foundV};
+
+enum message_type{none,foundG1, foundG2,foundG3,foundP, foundS, foundR, foundM,foundV,foundA};
 enum state{look$, found$, foundast, foundCS};
 /*
 int checksum = 0;
@@ -27,6 +28,7 @@ class gpsClass{
   private:
     string type[4]={"GPGSA", "GPGGA", "GPRMC", "GPGSV"};
     int count;
+    unsigned char calculate;
     char pls;
     state states;
     string buffer;
@@ -39,11 +41,52 @@ class gpsClass{
     //checks if it is at the beginning
     void find(char x);
     string fillBuffer(char a);
-    bool calcChecksum();
+    void calcChecksum();
     bool checkType(char a);
-    bool checkGPGSA(char a);
+    bool checkGPG(char a);
+    bool checkGPGSA(char s);
     bool checkGPGGA(char a);
     bool checkGPRMC(char a);
-    bool checkGPGSV(char a);
+    bool checkGPGSV(char s);
+    bool checkGPGSAV(char s);
+
 
 };
+/*
+//GPGGA,GPGSA, GPGSV, and GPRMC
+bool gpsClass::checkGPG(char a){
+  //bool f = false;
+  if(a=='G'){
+    this->mtype = foundG;
+    this->msg+=a;
+    return checkGPGGA(a);
+  }
+  else return false;
+  if(a=='S'&&this->mtype==foundG){
+    this->msg+=a;
+    this->mtype =foundS;
+    return checkGPGSA(a);
+  }
+  else return false;
+  if(a=='A'&& this->mtype == foundG){
+    this->msg+=a;
+    this->mtype=none;
+    return true;
+  }
+  else return false;
+}
+bool gpsClass::checkGPGSV(char s){
+  return true;
+}
+bool gpsClass::checkGPGGA(char a){
+  return true;
+}
+bool gpsClass::checkGPGSAV(char s){
+  if(this->mtype=foundS && s==)
+    ;
+  return true;
+}
+bool gpsClass::checkGPRMC(char a){
+  return true;
+}
+*/

@@ -44,8 +44,6 @@ int main(int argc, char *argv[])
 			if(n > 0){
 				//printf("Read byte:%c = %d\n", read_buff, read_buff);
 				sm.find(read_buff);
-				sm.print();
-
 				//printf("Read byte:%c = %d\n", read_buff, read_buff);
 
 			}
