@@ -35,13 +35,14 @@ class gpsClass{
     string msg;
     message_type mtype;
     string checkSum;
+    int check;
   public:
     gpsClass();
     ~gpsClass();
     //checks if it is at the beginning
     void find(char x);
     string fillBuffer(char a);
-    void calcChecksum();
+    void calcCheckSum();
     bool checkType(char a);
 /*
     bool checkGPG(char a);
