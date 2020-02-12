@@ -43,7 +43,7 @@ class gpsClass{
     void find(char x);
     string fillBuffer(char a);
     void calcCheckSum();
-    bool checkType(char a);
+    void checkType(char a);
 /*
     bool checkGPG(char a);
     bool checkGPGSA(char s);

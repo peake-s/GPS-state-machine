@@ -39,6 +39,7 @@ gpsClass::gpsClass(){
   this->checkSum=" ";
   this->msg=" ";
   this->buffer = " ";
+  this->check =0;
 }
 //void find(char x)
 //Summary:
@@ -53,8 +54,8 @@ gpsClass::gpsClass(){
 //
 //  Uses conditional logic to guide the statemachine
 void gpsClass::find(char x){
-//  cout << "find char "<<this->buffer<<endl;
-//  this->pls=x;
+  //int count =0;
+
 //determine the states: 1st check if we are looking for the money sign and if the money
 // sign is found change the state to found $
   if(this->states == look$ && x=='$'){
@@ -66,23 +67,38 @@ void gpsClass::find(char x){
     //add characters to the buffer before the asterisk
     if(x!='*'){
       this->buffer+=x;
-    //  cout << checkType(x) << endl;
-      /*if(checkType(x))
+
+    //cout << "char x out count if: " << x << endl;
+    if(count<5){
+      checkType(x);
+      cout << "char x in count if: " << x << endl;
+    //  cout << "count: " << this->count << endl;
+    }
+      /*
+      if(count==4){
         cout << "Message Type: " << this->msg << endl;
-      this->msg=""; */
+        this->msg="";
+        this->count=0;
+
+      } */
+      this->count++;
+    //  cout << "char x out of if: " << x << endl;
+
       //this is to check if there is an ast and checksum
+
       if(x=='\n'){
         this->states = look$;
-        cout << "Message data: "<<this->buffer<<endl;
+        //cout << "Message data: "<<this->buffer<<endl;
         this->buffer="";
         //call checksum
 
       }
     }
     else{//print the message data when the end is reached and reset the buffer
-      cout << "Message data: "<<this->buffer<<endl;
+    //  cout << "Message data: "<<this->buffer<<endl;
       calcCheckSum();
       this->buffer="";
+      this->count=0;
     }
   }/*
   if(x=='\n'&&this->states==found$){
@@ -108,9 +124,9 @@ void gpsClass::find(char x){
     //print the check sum and confirm that it is correct
     else{
       //call calcChecksum
-      cout << "Message checksum: " << this->checkSum << endl;
+    //  cout << "Message checksum: " << this->checkSum << endl;
       this->states=look$;
-      cout << "Calculated Checksum: " << hex<< this->check << endl;
+    //  cout << "Calculated Checksum: " << hex<< this->check << endl;
       this->checkSum="";
       this->check =0;
     }
@@ -128,52 +144,67 @@ void gpsClass::find(char x){
 // Description:
 //
 //  Uses conditional logic to determine the method type
-bool gpsClass::checkType(char a){
+void gpsClass::checkType(char a){
 //  bool g =false;
 message_type test=none;
 //cout << none << endl;
+  if(count>4)
+    return;
   if(a=='G'&&this->mtype==none){
     this->mtype = foundG1;
     this->msg += a;
-    cout<<"char: " << a <<endl;
+    return;
+  //  cout<<"char: " << a <<endl;
 
     //g =true;
-    cout << "state: none " << this->mtype<<endl;
+    //cout << "1st state: " << this->mtype<<endl;
   }
-  else{
+  if(this->mtype==none&&a!='G'){
       this->states = look$;
-      return false;
+  //    return false;
+      return;
     }
-    cout << "state: " << this->mtype<<endl;
+
   if(this->mtype== foundG1 && a == 'P'){
     this->mtype = foundP;
     this->msg += a;
-    cout << "state for foundG1 and a == P " << this->mtype<<endl;
-
+    //cout << "state for foundG1 and a == P " << this->mtype<<endl;
+    return;
   }
-  else {
+  else if(this->mtype== foundG1 && a != 'P'){
     this->states = look$;
-    return false;
+  //  return false;
+      return;
    }
+   cout << "state after foundG: " << this->mtype<<endl;
+   cout << "input char? " << a<<endl;
+   cout << "message1: " <<this->msg<<endl;
    if(this->mtype==foundP && a =='G'){
      this->mtype=foundG2;
      this->msg+=a;
+  //   cout << "foundP && a == G" <<endl;
+     return;
    }
    else if(this->mtype==foundP && a =='R'){
      this->mtype=foundR;
      this->msg+=a;
+     return;
    }
-   else{
+   else if(this->mtype==foundP && (a!='R'||a!='G')){
      this->states = look$;
-     return false;
+    // return false;
+        return;
    }
+
    if(this->mtype==foundG2 && a=='G'){
-     this->mtype==foundG3;
+     this->mtype=foundG3;
      this->msg+=a;
+     return;
    }
    else if(this->mtype==foundG2 && a=='S'){
      this->mtype=foundS;
      this->msg+=a;
+     return;
    }
    else if(this->mtype==foundR&&a=='M'){
      this->mtype=foundM;
@@ -181,46 +212,59 @@ message_type test=none;
    }
    else{
      this->states = look$;
-     return false;
+     return;
+     //return false;
    }
+
    if(this->mtype==foundG3 && a=='A'){
      this->mtype=none;
      this->msg+=a;
      this->states=look$;
-     return true;
+     return;
+     //return true;
    }
    else if(this->mtype==foundS && a=='V'){
      this->mtype=none;
      this->msg+=a;
      this->states=look$;
-     return true;
+     return;
+     //return true;
    }
    else if(this->mtype==foundS && a=='A'){
      this->mtype=none;
      this->msg+=a;
      this->states=look$;
-     return true;
+     return;
+     //return true;
    }
    else if(this->mtype==foundM && a == 'C'){
      this->mtype= none;
      this->msg+=a;
      this->states=look$;
-     return true;
+     return;
+     //return true;
    }
    else{
      this->states=look$;
-     return false;
+     return;
+    // return false;
    }
 }
-
+//void calcCheckSum()
+//Summary:
+// Calculates the checksum of the message to make sure that the given one is correct
+//
+//parameters: none, uses the buffer to calculate the check sum
+//
+// return value: none, but calculates the check sum that is to be printed
+//
+// Description:
+//
+//  uses the bit wise ^ xor bit wise operator to calculate the check sum
 void gpsClass::calcCheckSum(){
-  //int temp = 0;
-  cout <<"buffer: " << this->buffer << endl;
   for(int i =0; i< this->buffer.length();i++){
     this->check^=buffer[i];
-    //cout << i << endl;
   }
-//  return temp;
 }
 
 gpsClass::~gpsClass(){
