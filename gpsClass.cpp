@@ -37,10 +37,16 @@ void gpsClass::find(char x){
   if(this->states == found$ && x!='$'){
     if(x!='*'){
       this->buffer+=x;
-      /*s
-      if(checkType(x))
+    //  cout << checkType(x) << endl;
+      /*if(checkType(x))
         cout << "Message Type: " << this->msg << endl;
       this->msg=""; */
+      if(x=='\n'){
+        this->states = look$;
+        cout << "Message data: "<<this->buffer<<endl;
+        this->buffer="";
+        
+      }
     }
     else{
       cout << "Message data: "<<this->buffer<<endl;
@@ -76,19 +82,26 @@ void gpsClass::find(char x){
 
 bool gpsClass::checkType(char a){
 //  bool g =false;
-cout<<"char: " << a <<endl;
+message_type test=none;
+//cout << none << endl;
   if(a=='G'&&this->mtype==none){
     this->mtype = foundG1;
     this->msg += a;
+    cout<<"char: " << a <<endl;
+
     //g =true;
+    cout << "state: none " << this->mtype<<endl;
   }
   else{
       this->states = look$;
       return false;
     }
+    cout << "state: " << this->mtype<<endl;
   if(this->mtype== foundG1 && a == 'P'){
     this->mtype = foundP;
     this->msg += a;
+    cout << "state for foundG1 and a == P " << this->mtype<<endl;
+
   }
   else {
     this->states = look$;

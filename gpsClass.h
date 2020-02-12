@@ -43,12 +43,13 @@ class gpsClass{
     string fillBuffer(char a);
     void calcChecksum();
     bool checkType(char a);
+/*
     bool checkGPG(char a);
     bool checkGPGSA(char s);
     bool checkGPGGA(char a);
     bool checkGPRMC(char a);
     bool checkGPGSV(char s);
-    bool checkGPGSAV(char s);
+    bool checkGPGSAV(char s); */
 
 
 };
