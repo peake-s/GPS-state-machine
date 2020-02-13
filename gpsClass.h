@@ -14,81 +14,40 @@
 // Description: declaration of the gps class used to parse the input
 //-----------------------------------------------------------------------
 using namespace std;
-#include <string>
-
-
-enum message_type{none,foundG1, foundG2,foundG3,foundP, foundS, foundR, foundM,foundV,foundA};
+//enums that store the state of the machine
 enum state{look$, found$, foundast, foundCS};
-/*
-int checksum = 0;
-for (inti = 0; i < stringToCalculateTheChecksumOver.length; i++){
-c =
-checksum ^= Convert.ToByte(sentence[i]);} */
+//Description:
+//	This class implements a state machine that parses through gps messages
+//
+// Data members:
+//
+//	Private data members for the buffer, check sum, and helper data members
+//
+//	Methods:
+//
+//	Public methods to find the state of the machine and act accordingly
 class gpsClass{
   private:
-    string type[4]={"GPGSA", "GPGGA", "GPRMC", "GPGSV"};
+    //used to store message type
     int count;
-    unsigned char calculate;
-    char pls;
+    //used to store calculated checkSum
+    int check; 
+    //used to store message type
+    string typeM;
+    //state of the machine
     state states;
+    //prints buffer of each message
     string buffer;
-    string msg;
-    message_type mtype;
+    //stores the checkSun
     string checkSum;
-    int check;
   public:
+    //constructor to initialize data members
     gpsClass();
     ~gpsClass();
-    //checks if it is at the beginning
+    //main function which determines the state of the machine and acts accordingly
     void find(char x);
-    string fillBuffer(char a);
+    //calculates the checksum
     void calcCheckSum();
-    void checkType(char a);
-/*
-    bool checkGPG(char a);
-    bool checkGPGSA(char s);
-    bool checkGPGGA(char a);
-    bool checkGPRMC(char a);
-    bool checkGPGSV(char s);
-    bool checkGPGSAV(char s); */
-
-
+    //checks if the message type is valid
+    bool checkM();
 };
-/*
-//GPGGA,GPGSA, GPGSV, and GPRMC
-bool gpsClass::checkGPG(char a){
-  //bool f = false;
-  if(a=='G'){
-    this->mtype = foundG;
-    this->msg+=a;
-    return checkGPGGA(a);
-  }
-  else return false;
-  if(a=='S'&&this->mtype==foundG){
-    this->msg+=a;
-    this->mtype =foundS;
-    return checkGPGSA(a);
-  }
-  else return false;
-  if(a=='A'&& this->mtype == foundG){
-    this->msg+=a;
-    this->mtype=none;
-    return true;
-  }
-  else return false;
-}
-bool gpsClass::checkGPGSV(char s){
-  return true;
-}
-bool gpsClass::checkGPGGA(char a){
-  return true;
-}
-bool gpsClass::checkGPGSAV(char s){
-  if(this->mtype=foundS && s==)
-    ;
-  return true;
-}
-bool gpsClass::checkGPRMC(char a){
-  return true;
-}
-*/
