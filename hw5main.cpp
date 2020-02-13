@@ -1,15 +1,17 @@
 //******************************************************************
 // Program #: Reading from serial port
 //
-// Programmer: Matthew Gelber/Robert Klenke
+// Programmer: Samuel Peake
 //
-// Due Date: NA
+// Due Date: 4/5/2021
 //
-// EGRE 347, Fall 2020       Instructor: Robert Klenke
+// EGRE 347, Spring 2021       Instructor: Robert Klenke
+//
+// Assignment: HW 5
 //
 // Pledge: I have neither given nor received unauthorized aid on this program.
 //
-// Description: C++ example for reading information from serial port one byte at a time
+// Description: Main for  reading information from serial port one byte at a time
 //
 // Input: command line argument of the desired serial port
 //
@@ -30,6 +32,7 @@ int main(int argc, char *argv[])
 {
 	//unsigned char read_buff;
 	char read_buff;
+	//calling instanc eof gpsClass and calling the constructor
 	gpsClass sm = gpsClass();
 	cout << argv[1] << endl;
 	int sp = open(argv[1], O_RDONLY | O_NOCTTY | O_NDELAY);	//opens the serial port inputted as argument as read only
@@ -43,6 +46,7 @@ int main(int argc, char *argv[])
 		int n = read(sp, &read_buff, sizeof(read_buff));
 			if(n > 0){
 				//printf("Read byte:%c = %d\n", read_buff, read_buff);
+				//calling the find function on each pased byte and letting the find function do the rest
 				sm.find(read_buff);
 				//printf("Read byte:%c = %d\n", read_buff, read_buff);
 
