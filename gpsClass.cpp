@@ -80,7 +80,8 @@ void gpsClass::find(char x){
       if(checkM()){
         cout << "Message Type: " << this->typeM << endl;
       cout << "Message data: "<<this->buffer<<endl;
-      calcCheckSum(); }
+      calcCheckSum();
+    }
       else this->states=look$;
       this->buffer="";
       this->typeM = "";

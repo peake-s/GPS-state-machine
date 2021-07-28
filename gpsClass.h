@@ -29,9 +29,10 @@ enum state{look$, found$, foundast, foundCS};
 class gpsClass{
   private:
     //used to store message type
+    enum cat{meow, notmeow};
     int count;
     //used to store calculated checkSum
-    int check; 
+    int check;
     //used to store message type
     string typeM;
     //state of the machine
